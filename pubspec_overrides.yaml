@@ -1,0 +1,6 @@
+# melos_managed_dependency_overrides: dcli_common,dcli_core
+dependency_overrides:
+  dcli_common:
+    path: ../dcli/dcli_common
+  dcli_core:
+    path: ../dcli/dcli_core

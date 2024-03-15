@@ -12,7 +12,6 @@ dependencies:
   uuid: ^4.3.3
   yaml: ^3.1.2
   dcli_core:
-    path: ../dcli/dcli_core
 dev_dependencies:
   lint_hard: ^4.0.0
   test: ^1.25.2

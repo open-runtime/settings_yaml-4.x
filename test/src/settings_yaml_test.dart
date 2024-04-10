@@ -49,7 +49,7 @@ double: 10.1
 bool: true
 ''';
 
-    await core.withTempFile((path) async {
+    await core.withTempFileAsync((path) async {
       const path = '/tmp/settings.yaml';
       final yaml = SettingsYaml.fromString(content: content, filePath: path);
       yaml['sex'] = 'male';
@@ -72,7 +72,7 @@ hostnames: [one, two, three]
     final yaml = SettingsYaml.fromString(content: content, filePath: path);
     expect(yaml['hostnames'], equals(['one', 'two', 'three']));
 
-    await core.withTempFile((pathTo) async {
+    await core.withTempFileAsync((pathTo) async {
       var yaml = SettingsYaml.load(pathToSettings: pathTo);
       yaml['list'] = <String>['one', 'two', 'three'];
       await yaml.save();
@@ -101,25 +101,19 @@ hostnames:
     final yaml = SettingsYaml.fromString(content: content, filePath: path);
     expect(
         const MapEquality<String, String>().equals(
-            Map.from(yaml['hostnames'] as Map<String, dynamic>),
-            {'host1': 'one', 'host2': 'two', 'host3': 'three'}),
+            Map.from(yaml['hostnames'] as Map<String, dynamic>), {'host1': 'one', 'host2': 'two', 'host3': 'three'}),
         isTrue);
 
-    await core.withTempFile((pathTo) async {
+    await core.withTempFileAsync((pathTo) async {
       var yaml = SettingsYaml.load(pathToSettings: pathTo);
-      yaml['map'] = <String, String>{
-        'host1': 'one',
-        'host2': 'two',
-        'host3': 'three'
-      };
+      yaml['map'] = <String, String>{'host1': 'one', 'host2': 'two', 'host3': 'three'};
       await yaml.save();
 
       yaml = SettingsYaml.load(pathToSettings: pathTo);
 
       expect(
           const MapEquality<String, String>().equals(
-              Map.from(yaml['map'] as Map<String, dynamic>),
-              {'host1': 'one', 'host2': 'two', 'host3': 'three'}),
+              Map.from(yaml['map'] as Map<String, dynamic>), {'host1': 'one', 'host2': 'two', 'host3': 'three'}),
           isTrue);
     });
   });
@@ -315,10 +309,8 @@ list:
     expect(yaml.asInt('port', defaultValue: 11), equals(11));
     expect(yaml.asBool('active'), isTrue);
     expect(yaml.asDouble('volume', defaultValue: 10.2), equals(10.2));
-    expect(
-        yaml.asString('imageid', defaultValue: 'hi'), equals('65385002e970'));
-    expect(yaml.asStringList('list', defaultValue: ['a', 'b', 'c']),
-        equals(['a', 'b', 'c']));
+    expect(yaml.asString('imageid', defaultValue: 'hi'), equals('65385002e970'));
+    expect(yaml.asStringList('list', defaultValue: ['a', 'b', 'c']), equals(['a', 'b', 'c']));
   });
 
   test('force String', () async {
@@ -402,12 +394,9 @@ people:
 
     final settings = SettingsYaml.fromString(content: content, filePath: path);
 
+    expect(() => settings.selectAsString('bad.path'), throwsA(isA<SettingsYamlException>()));
     expect(() => settings.selectAsString('bad.path'),
-        throwsA(isA<SettingsYamlException>()));
-    expect(
-        () => settings.selectAsString('bad.path'),
-        throwsA((dynamic e) =>
-            e is SettingsYamlException && e.message == 'Invalid path: bad'));
+        throwsA((dynamic e) => e is SettingsYamlException && e.message == 'Invalid path: bad'));
 
     expect(
         () => settings.selectAsString('people.bad'),

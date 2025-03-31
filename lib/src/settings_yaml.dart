@@ -109,8 +109,7 @@ class SettingsYaml {
   ///
   factory SettingsYaml.load({required String pathToSettings}) {
     if (!exists(dirname(pathToSettings))) {
-      throw SettingsYamlException(
-          'The directory tree above ${truepath(pathToSettings)} does not exist.'
+      throw SettingsYamlException('The directory tree above ${truepath(pathToSettings)} does not exist.'
           ' Create the directory tree and try again.');
     }
 
@@ -133,8 +132,7 @@ class SettingsYaml {
   /// If the key isn't a valid List<String>  then [defaultValue] is returned
   /// Use [validStringList] to determine if the key exists and is
   /// a valid List<String>.
-  List<String> asStringList(String path,
-      {List<String> defaultValue = const <String>[]}) {
+  List<String> asStringList(String path, {List<String> defaultValue = const <String>[]}) {
     if (validStringList(path)) {
       return (valueMap[path] as List<dynamic>).cast<String>();
     } else {
@@ -155,16 +153,14 @@ class SettingsYaml {
   /// If the key isn't a valid bool then [defaultValue] is returned
   /// Use [validBool] to determine if the key exists and is
   /// a valid bool.
-  bool asBool(String path, {bool defaultValue = true}) =>
-      validBool(path) ? valueMap[path] as bool : defaultValue;
+  bool asBool(String path, {bool defaultValue = true}) => validBool(path) ? valueMap[path] as bool : defaultValue;
 
   /// returns the value at [path] as an int.
   /// If the value isn't an int then an exception will be thrown.
   /// If the key isn't a valid int then [defaultValue] is returned
   /// Use [validInt] to determine if the key exists and is
   /// a valid int.
-  int asInt(String path, {int defaultValue = 0}) =>
-      validInt(path) ? valueMap[path] as int : defaultValue;
+  int asInt(String path, {int defaultValue = 0}) => validInt(path) ? valueMap[path] as int : defaultValue;
 
   /// returns the value at [path] as an double.
   /// If the value isn't an double then an exception will be thrown.
@@ -311,8 +307,7 @@ class SettingsYaml {
   String? selectAsString(String selector) {
     final dynamic value = traverse(selector);
     if (value is! String) {
-      throw SettingsYamlException(
-          'Expected a String at $selector. Found $value');
+      throw SettingsYamlException('Expected a String at $selector. Found $value');
     }
 
     return value;
@@ -344,8 +339,7 @@ class SettingsYaml {
   double? selectAsDouble(String selector) {
     final dynamic value = traverse(selector);
     if (value is! double) {
-      throw SettingsYamlException(
-          'Expected a double at $selector. Found $value');
+      throw SettingsYamlException('Expected a double at $selector. Found $value');
     }
 
     return value;
@@ -437,8 +431,7 @@ class SettingsYaml {
 
           final matches = _indexRegx.allMatches(part);
           if (matches.length != 1) {
-            throw SettingsYamlException(
-                'Expected a index selector e.g. people[1] '
+            throw SettingsYamlException('Expected a index selector e.g. people[1] '
                 'in $part at $traversed');
           }
 
@@ -453,8 +446,7 @@ class SettingsYaml {
           }
         } else {
           if (current is! YamlMap) {
-            throw SettingsYamlException(
-                'As $previousTraversed is a list expected $traversed to be a '
+            throw SettingsYamlException('As $previousTraversed is a list expected $traversed to be a '
                 'list index. e.g $traversed[i]');
           }
           current = current[part];
